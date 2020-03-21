@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block title %} | {{user.name}}'s Dashboard {% endblock %}
+{% block content %}
+
+<section id="container" class="py-5 bg-dark text-white">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-12">
+        <h1 class="display-6">User Dashboard</h1>
+        <p class="lead">Play the game here</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<section id="bc" class="mt-3">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'index' %}">
+            <i class="fas fa-home"></i> Home</a>
+        </li>
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item "> <a href="{% url 'setup' %} ">Setup</a></li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'day' %}">Day</a>
+        </li>
+        <li class="breadcrumb-item active">Night
+        </li>
+      </ol>
+    </nav>
+  </div>
+</section>
+{% include 'partials/_alerts.html' %}
+
+{% if user.can_play %}
+{% if user.has_lynched %}
+<section id="dashboard" class="py-4">
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Welcome {{user.name}}</h2>
+      <p>
+        your group name is {{ user.group}} </p>
+        <p>your role is {{ user.role }} and your side is {{user.side }}</p>
+
+        
+      
+      {% if user.is_alive %}
+
+      <!-- roles -->
+      <!-- Mafia -->
+        {% if user.role == 'Mafia' %}
+        <form action="{% url 'target' %}" method="POST">
+        {% csrf_token %}
+        <div class="col-md-6 mb-3">
+          <select name="target" class="form-control">
+            <option selected="true" disabled="disabled">Who do you want to shoot?</option>
+              {% for key,value in play.items %}
+              <option value="{{ key }}">{{value}}</option>
+              {% endfor %}
+          </select>
+        </div>
+        <button class="btn btn-dark btn-block col-md-5 mb-3" type="submit">Shoot</button>
+        </form>
+        {% endif %}
+
+
+          <!-- Doctor -->
+          {% if user.role == 'Doctor' %}
+          <form action="{% url 'heal' %}" method="POST">
+          {% csrf_token %}
+          <div class="col-md-6 mb-3">
+            <select name="heal" class="form-control">
+              <option selected="true" disabled="disabled">Who do you want to heal?</option>
+                {% for key,value in play.items %}
+                <option value="{{ key }}">{{value}}</option>
+                {% endfor %}
+            </select>
+          </div>
+          <button class="btn btn-dark btn-block col-md-5 mb-3" type="submit">Heal</button>
+          </form>
+          {% endif %}
+    
+
+          <!-- Sniper -->
+          {% if user.role == 'Sniper' %}
+          <form action="{% url 'shoot' %}" method="POST">
+          {% csrf_token %}
+          <div class="col-md-6 mb-3">
+            <select name="shoot" class="form-control">
+              <option selected="true" disabled="disabled">Who do you want to shoot?</option>
+                {% for key,value in play.items %}
+                <option value="{{ key }}">{{value}}</option>
+                {% endfor %}
+            </select>
+          </div>
+          <button class="btn btn-dark btn-block col-md-5 mb-3" type="submit">Shoot</button>
+          </form>
+          {% endif %}
+
+
+          <!-- Detective -->
+          {% if user.role == 'Detective' %}
+          <form action="{% url 'inspect' %}" method="POST">
+          {% csrf_token %}
+          <div class="col-md-6 mb-3">
+            <select name="inspect" class="form-control">
+              <option selected="true" disabled="disabled">Who do you want to inspect?</option>
+                {% for key,value in play.items %}
+                <option value="{{ key }}">{{value}}</option>
+                {% endfor %}
+            </select>
+          </div>
+          <button class="btn btn-dark btn-block col-md-5 mb-3" type="submit">Inspect</button>
+          </form>
+          {% endif %}
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+      {% else %}
+      <h2>Dear {{ user.name }} you are Dead!</h2>
+      {% endif %}
+
+      <br/>
+      &emsp;
+</div>
+</div>
+</div>
+</section>
+{% else %}
+<h2>Its Day time. please go to <a href="{% url 'day' %}"> Day  menu</a></h2>
+
+{% endif %}
+
+{% else %}
+<h2>Wait for your leader to start the game</h2>
+{% endif %}
+  {% endblock %}

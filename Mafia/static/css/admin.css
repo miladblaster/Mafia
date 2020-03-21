@@ -1,0 +1,37 @@
+#header {
+    height: 50 px;
+    background: #10284e;
+    color: #fff
+}
+
+/* color of "admin area" */
+#branding h1 {
+    color: #fff;
+}
+
+a:link,
+a:visited{
+    color:#10284e;
+
+}
+
+/* the top bar */
+div.breadcrumbs{
+    background: #30caa0;
+    /* this is for the text color */
+    color: #10284e; 
+}
+
+/* button colors */
+div.breadcrumbs a{
+    color: #333;
+}
+
+.module h2, .module caption, .inline-group h2{
+    background: #30caa0
+}
+
+.button.default, input[type=submit].default, .submit-row input.default {
+    background: #10284e;
+    color: #fff;
+}

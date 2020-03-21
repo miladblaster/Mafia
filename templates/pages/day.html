@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %} | {{user.name}}'s Dashboard {% endblock %}
+{% block content %}
+
+<section id="container" class="py-5 bg-dark text-white">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-12">
+        <h1 class="display-6">User Dashboard</h1>
+        <p class="lead">Play the game here</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<section id="bc" class="mt-3">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'index' %}">
+            <i class="fas fa-home"></i> Home</a>
+        </li>
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item "> <a href="{% url 'setup' %} ">Setup</a></li>
+        <li class="breadcrumb-item active">Day
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'night' %}">Night</a>
+        </li>
+      </ol>
+    </nav>
+  </div>
+</section>
+{% include 'partials/_alerts.html' %}
+
+{% if user.can_play %}
+
+
+{% if user.has_lynched == False %}
+<!-- List of alive people: -->
+<section id="dashboard" class="py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Welcome {{user.name}}</h2>
+        <!-- please enter the username of players you want to play with (update their groupname and set their number(i) and prepare them for game) -->
+        <!-- if you already have a group of friends, give them your username and refresh -->
+        <p>
+          your group name is {{ user.group}}</p>
+        <p>your role is {{ user.role }} and your side is {{user.side }}
+        </p>
+          
+        {% if user.is_alive %}
+        <!-- Detective message -->
+        {% if user.role == 'Detective' %}
+        {% if user.message|length > 2 %}
+        <p>your inspection result is: <br> {{ user.message }} </p>
+        {% endif %}
+        {% endif %}
+
+
+
+        {% else %}
+        <h2>Dear {{ user.name }} you are Dead!</h2>
+        {% endif %}
+
+
+
+        <br/>
+        &emsp;
+
+        <form action="{% url 'lynch' %}" method="POST">
+          {% csrf_token %}
+          <div class="col-md-6 mb-3">
+            <select name="lynch" class="form-control">
+              <option selected="true" disabled="disabled">Who do you want to lynch?</option>
+                {% for key,value in play.items %}
+                <option value="{{ key }}">{{value}}</option>
+                {% endfor %}
+            </select>
+          </div>
+          <button class="btn btn-dark btn-block col-md-5 mb-3" type="submit">Lynch</button>
+          </form>
+  </div>
+  </div>
+  </div>
+</section>
+
+{% else %}
+<h2>Its Night time. please go to <a href="{% url 'night' %}"> Night menu</a></h2>
+
+{% endif %}
+{% else %}
+<h2>Wait for your leader to start the game</h2>
+
+{% else %}
+h2
+
+{% endif %}
+  {% endblock %}

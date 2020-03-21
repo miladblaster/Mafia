@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %} | {{user.name}}'s Dashboard {% endblock %}
+{% block content %}
+
+<section id="container" class="py-5 bg-dark text-white">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-12">
+        <h1 class="display-6">User Dashboard</h1>
+        <p class="lead">Play the game here</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<section id="bc" class="mt-3">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'index' %}">
+            <i class="fas fa-home"></i> Home</a>
+        </li>
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item active">Setup
+        </li>
+        <li class="breadcrumb-item"> <a href="{% url 'day' %}">Day</a>
+        </li>
+        <li class="breadcrumb-item"> <a href="{% url 'night' %}">Night</a>
+        </li>
+      </ol>
+    </nav>
+  </div>
+</section>
+{% include 'partials/_alerts.html' %}
+
+
+<section id="dashboard" class="py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+<br/>
+<h2>If you want to create a new Group, do the two steps below:</h2>
+  <br>
+  <p>1-Create a group :</p>
+<form action="{% url 'make_group' %}" method="POST">
+  {% csrf_token %}
+  <div class="col-md-6 mb-3">
+      <input type="text" placeholder="Enter your group name" name="groupname">
+    </select>
+  </div>
+  <button class="btn btn-dark btn-block col-md-5 mb-3" type="submit">Set up the group</button>
+  </form>
+
+          <!-- adding members -->
+<br/>
+&emsp;
+
+  <p>2-Add the players you want to play with to the group: <br></p>
+<form action="{% url 'add_to_group' %}" method="GET">
+  {% csrf_token %}
+  <div class="col-md-6 mb-3">
+      <input type="text" placeholder="Enter your friends username" name="username">
+    </select>
+  </div>
+  <button class="btn btn-dark btn-block col-md-5 mb-3" type="submit">Register user in your group</button>
+  </form>
+
+
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  
+
+  <h2>Select the roles you wish to play as:</h2>
+  <!-- Select roles -->
+  <form action="{% url 'select_roles' %}" method="get">
+    <input type="checkbox" name="role1" value="Mafia">
+    <label for="role1"> Mafia </label><br>
+    <input type="checkbox" name="role2" value="Doctor">
+    <label for="role2"> Doctor </label><br>
+    <input type="checkbox" name="role3" value="Sniper">
+    <label for="role3"> Sniper </label><br>
+    <input type="checkbox" name="role4" value="Detective">
+    <label for="role1"> Detective </label><br>
+    <input type="checkbox" name="role5" value="Joker">
+    <label for="role1"> Joker </label><br>
+
+
+    <input type="submit" value="Submit">
+  </form>
+
+        <h2>If you and your group are ready, You can start:</h2>
+        <!-- Assign roles button with number of players input -->
+        {% if user.number == 1 %}
+        <p>in order to start the game, Press the button to assign roles and begin!</p>
+        <form action="{% url 'assign' %}" method="POST">
+        {% csrf_token %}
+        <div class="col-md-6 mb-3">
+          <select name="playerno" class="form-control">
+            <option selected="true" disabled="disabled">How many players do we have?</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+          </select>
+        </div>
+        <button class="btn btn-dark btn-block col-md-5 mb-3" type="submit">press to assign roles</button>
+        </form>
+        {% else %}
+        <p> Dear {{ user.name }} you are not qualified to start the game. Ask your group creator.</p>
+        {% endif %}
+
+        </div>
+      </div>
+    </div>
+</section>
+
+
+  {% endblock %}

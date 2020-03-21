@@ -1,0 +1,8 @@
+
+<p>Hello plz wait and press this button to proceed.
+</p>
+
+<form action="{% url 'game' %}" method="POST">
+  {% csrf_token %}
+  <button class="btn btn-dark btn-block col-md-5 mb-3" type="submit">Press to proceed </button>
+</form>

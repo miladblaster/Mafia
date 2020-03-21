@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %} | {{user.name}}'s Dashboard {% endblock %}
+{% block content %}
+
+<section id="container" class="py-5 bg-dark text-white">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-12">
+        <h1 class="display-6">User Dashboard</h1>
+        <p class="lead">Play the game here</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<section id="bc" class="mt-3">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'index' %}">
+            <i class="fas fa-home"></i> Home</a>
+        </li>
+        <li class="breadcrumb-item active"> Dashboard</li>
+        <li class="breadcrumb-item "> <a href="{% url 'setup' %} ">Setup</a></li>
+        <li class="breadcrumb-item"> <a href="{% url 'day' %}">Day</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'night' %}">Night</a>
+        </li>
+      </ol>
+    </nav>
+  </div>
+</section>
+{% include 'partials/_alerts.html' %}
+
+
+
+<section id="dashboard" class="py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Welcome {{user.name}}</h2>
+        <p>
+          Your username is {{ user.username }} <br/></p>
+          {% if user.group|length < 1 %}
+          <p> you do not have a group yet. either ask to be added, or create one yourself.</p>
+          {% else %}
+          <p>your group name is {{ user.group}} , Please wait for other group members to join</p>
+          {% endif %}
+          
+        
+          &emsp;
+        <!-- Confirming group -->
+        <h2><br> If your leader has added you to the group, please enter the group name below:</p></h2>
+        <form action="{% url 'gpname' %}" method="POST">
+          {% csrf_token %}
+          <div class="col-md-6 mb-3">
+              <input type="text" placeholder="Enter your group name" name="groupname">
+            </select>
+          </div>
+          <button class="btn btn-dark btn-block col-md-5 mb-3" type="submit">Confirm your group</button>
+          </form>
+
+
+
+  </div>
+  </div>
+  </div>
+</section>
+
+  {% endblock %}
