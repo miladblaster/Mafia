@@ -1,6 +1,9 @@
-
-<p>Hello plz wait and press this button to proceed.
+<!-- 
+<p>Hello plz wait until everyone has done their part,then press <a href="{% url 'day' %}">This Button</a> to proceed.
+</p> -->
+<p>Hello plz wait until everyone has done their part,then press This Button to proceed.
 </p>
+
 
 <form action="{% url 'game' %}" method="POST">
   {% csrf_token %}

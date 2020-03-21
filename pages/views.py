@@ -69,13 +69,22 @@ def logout(request):
 
 def day(request):
     playerno= CustomUser.objects.filter(group=request.user.group).count()
+    #Context for players:
     names=[None]
     for i in range (1,playerno+1):
         names.append(get_user(request,i))
 
     play=dict(zip(names,names))
+
+    #Context for lists:
+    live=[]
+    for i in range (1,playerno+1):
+        live.append(get_user(request,i))
+
+    alive=dict(zip(live,live))
     context={
-        'play': play
+        'play':play,
+        'alive': alive
     }
 
     return render (request,'pages/day.html',context)

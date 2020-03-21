@@ -67,11 +67,15 @@
         <h2>Dear {{ user.name }} you are Dead!</h2>
         {% endif %}
 
+        <!-- List of alive people: -->
+        <h2>This is the list of players still in game: </h2>
+        {% for key,value in alive.items %}
 
-
+        <p>{{value}}</p>
+        {% endfor %}
         <br/>
         &emsp;
-
+        {% if user.number == 1 %}
         <form action="{% url 'lynch' %}" method="POST">
           {% csrf_token %}
           <div class="col-md-6 mb-3">
@@ -88,7 +92,7 @@
   </div>
   </div>
 </section>
-
+{% endif %}
 {% else %}
 <h2>Its Night time. please go to <a href="{% url 'night' %}"> Night menu</a></h2>
 
@@ -96,8 +100,6 @@
 {% else %}
 <h2>Wait for your leader to start the game</h2>
 
-{% else %}
-h2
 
 {% endif %}
   {% endblock %}

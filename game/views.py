@@ -44,12 +44,14 @@ def gpname(request):
 
 #Role choices:
 def select_roles(request):
+    role1,role2,role3,role4,role5=None,None,None,None,None
     global roleslist
+    
     role1=request.GET['role1']
     role2=request.GET['role2']
     role3=request.GET['role3']
     role4=request.GET['role4']
-    role5=request.GET['role5']
+    # role5=request.GET['role5']
         
     roleslist=[role1,role2,role3,role4,role5]
     return render (request, 'pages/setup.html')
@@ -193,6 +195,7 @@ def inspect(request):
 
 #Calculations:
 def game(request):
+    
     #Mafia and doctor:
     if heal != target:
         CustomUser.objects.filter(username=target).update(is_alive=False)
@@ -206,8 +209,8 @@ def game(request):
     
     #Detective:
     xx=None
-    if CustomUser.objects.filter(role='Mafia').exists():
-        xx=CustomUser.objects.filter(role='Mafia').get()
+    if CustomUser.objects.filter(role='Mafia',group=request.user.group).exists():
+        xx=CustomUser.objects.filter(role='Mafia',group=request.user.group).get()
 
     if inspect == xx:
         CustomUser.objects.filter(role='Detective').update(message ='Good Guess! The person you investigated is indeed Mafia!')
@@ -227,7 +230,7 @@ def game(request):
         'play': play
     }
     #Making sure they go to day afterwards
-    if CustomUser.objects.filter(has_lynched=False,group=request.user.group).count() == CustomUser.objects.filter(is_alive=True).count():
+    if CustomUser.objects.filter(has_lynched=False,is_alive=True,group=request.user.group).count() == CustomUser.objects.filter(is_alive=True,group=request.user.group).count():
         return render(request,'pages/day.html', context)
     else:
         return render (request, 'pages/wait.html')
